@@ -8,8 +8,11 @@
 body{font-family:Arial;margin:0;background:#fff8f0;text-align:center}
 header{background:#111;color:#d4af37;padding:15px}
 img{width:90%;max-width:320px;border-radius:12px;margin-top:15px}
-.btn{background:#25D366;color:#fff;padding:12px 22px;border-radius:25px;display:inline-block;margin:8px;text-decoration:none;font-weight:bold;border:none;font-size:16px}
+.btn{background:#25D366;color:#fff;padding:12px 22px;border-radius:25px;display:inline-block;margin:8px;text-decoration:none;font-weight:bold;border:none;font-size:16px;cursor:pointer}
+.cartbtn{background:#111;color:#d4af37;padding:12px 22px;border-radius:25px;display:inline-block;margin:8px;font-weight:bold;cursor:pointer}
 .back{color:#111;display:block;margin-top:15px}
+#cartbox{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#0008}
+#cartinner{background:#fff;margin:60px 15px;padding:20px;border-radius:15px;text-align:left}
 </style>
 </head>
 <body>
@@ -17,19 +20,20 @@ img{width:90%;max-width:320px;border-radius:12px;margin-top:15px}
 <h1 id="name">Suit</h1>
 <img id="pic" src="purple-1.jpg">
 <h2>Rs. 2400 • Cash on Delivery</h2>
-<p>Premium Fabric • Beautiful Stitching • All Pakistan Delivery</p>
+<p><b>Unstitched Printed Suit</b><br><b>Fabric: Dhanak</b><br>Premium Stitching • All Pakistan Delivery</p>
 <button class="btn" onclick="add()">Add to Cart</button><br>
-<a class="btn" id="wa" href="#">WhatsApp Pe Order Karein</a>
+<div class="cartbtn" onclick="openCart()">🛒 Cart: <span id="cart">0</span> items - Kholain</div><br>
 <a class="back" href="index.html">← Wapas Jao</a>
-<p>Cart: <span id="cart">0</span> items</p>
+<div id="cartbox"><div id="cartinner"><h2>Your Cart</h2><div id="items"></div><p id="total"></p><a class="btn" id="wa" href="#">WhatsApp Pe Order Karein</a><br><button class="btn" style="background:#111" onclick="document.getElementById('cartbox').style.display='none'">Band Karein</button></div></div>
 <script>
 let id=new URLSearchParams(location.search).get('id')||'purple';
 let names={purple:'Purple Suit',black:'Black Suit',navy:'Navy Blue Suit'};
 document.getElementById('name').innerText=names[id]||'Suit';
 document.getElementById('pic').src=id+'-1.jpg';
-document.getElementById('wa').href='https://wa.me/923001234567?text='+encodeURIComponent('Assalam-o-Alaikum! Mujhe '+ (names[id]||'Suit') +' order karna hai. Rs.2400 COD');
-document.getElementById('cart').innerText=localStorage.getItem('zirah_cart')||0;
-function add(){let c=parseInt(localStorage.getItem('zirah_cart')||0)+1;localStorage.setItem('zirah_cart',c);document.getElementById('cart').innerText=c;alert('Cart me add ho gaya!')}
+function getCart(){try{return JSON.parse(localStorage.getItem('zirah_items')||'[]')}catch(e){return[]}}
+document.getElementById('cart').innerText=getCart().length;
+function add(){let c=getCart();c.push(names[id]||'Suit');localStorage.setItem('zirah_items',JSON.stringify(c));document.getElementById('cart').innerText=c.length;alert('Cart me add ho gaya!')}
+function openCart(){let c=getCart();document.getElementById('items').innerHTML=c.length?c.map(x=>'<p>• '+x+' - Rs.2400</p>').join(''):'<p>Cart khaali hai.</p>';document.getElementById('total').innerText=c.length?'Total: Rs. '+(c.length*2400):'';document.getElementById('wa').href='https://wa.me/923001234567?text='+encodeURIComponent('Assalam-o-Alaikum! Mujhe ye order karna hai:\n'+c.join('\n')+'\nTotal: Rs. '+(c.length*2400)+' COD');document.getElementById('cartbox').style.display='block'}
 </script>
 </body>
 </html>
