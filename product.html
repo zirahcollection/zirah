@@ -13,6 +13,8 @@ img{width:90%;max-width:320px;border-radius:12px;margin-top:15px}
 .back{color:#111;display:block;margin-top:15px}
 #cartbox{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#0008}
 #cartinner{background:#fff;margin:60px 15px;padding:20px;border-radius:15px;text-align:left}
+.qty{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee}
+.qty button{width:32px;height:32px;border-radius:50%;border:1px solid #111;background:#fff;font-size:18px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -25,7 +27,7 @@ img{width:90%;max-width:320px;border-radius:12px;margin-top:15px}
 <button class="btn" onclick="add()">Add to Cart</button><br>
 <div class="cartbtn" onclick="openCart()">🛒 Cart: <span id="cart">0</span> items</div><br>
 <a class="back" href="index.html">← Back</a>
-<div id="cartbox"><div id="cartinner"><h2>Your Cart</h2><div id="items"></div><p id="total"></p><a class="btn" id="wa" href="#">WhatsApp Pe Order Karein</a><br><button class="btn" style="background:#111" onclick="document.getElementById('cartbox').style.display='none'">Band Karein</button></div></div>
+<div id="cartbox"><div id="cartinner"><h2>Your Cart</h2><div id="items"></div><p id="total"></p><a class="btn" id="wa" href="#">Order on WhatsApp</a><br><button class="btn" style="background:#111" onclick="document.getElementById('cartbox').style.display='none'">Close</button></div></div>
 <script>
 let id=new URLSearchParams(location.search).get('id')||'purple';
 let names={purple:'Purple Suit',black:'Black Suit',navy:'Navy Blue Suit'};
@@ -33,9 +35,11 @@ document.getElementById('name').innerText=names[id]||'Suit';
 document.getElementById('pic1').src=id+'-1.jpg';
 document.getElementById('pic2').src=id+'-2.jpg';
 function getCart(){try{return JSON.parse(localStorage.getItem('zirah_items')||'[]')}catch(e){return[]}}
-document.getElementById('cart').innerText=getCart().length;
-function add(){let c=getCart();c.push(names[id]||'Suit');localStorage.setItem('zirah_items',JSON.stringify(c));document.getElementById('cart').innerText=c.length;alert('Cart me add ho gaya!')}
-function openCart(){let c=getCart();document.getElementById('items').innerHTML=c.length?c.map(x=>'<p>• '+x+' - Rs.2400</p>').join(''):'<p>Cart khaali hai.</p>';document.getElementById('total').innerText=c.length?'Total: Rs. '+(c.length*2400):'';document.getElementById('wa').href='https://wa.me/923001234567?text='+encodeURIComponent('Assalam-o-Alaikum! Mujhe ye order karna hai:\n'+c.join('\n')+'\nTotal: Rs. '+(c.length*2400)+' COD');document.getElementById('cartbox').style.display='block'}
+function updateCount(){document.getElementById('cart').innerText=getCart().length}
+updateCount();
+function add(){let c=getCart();c.push(names[id]||'Suit');localStorage.setItem('zirah_items',JSON.stringify(c));updateCount();alert('Added to Cart!')}
+function changeQty(name,delta){let c=getCart();if(delta>0){c.push(name)}else{let i=c.lastIndexOf(name);if(i>-1)c.splice(i,1)}localStorage.setItem('zirah_items',JSON.stringify(c));updateCount();openCart()}
+function openCart(){let c=getCart();let counts={};c.forEach(x=>counts[x]=(counts[x]||0)+1);let html=Object.keys(counts).length?Object.keys(counts).map(n=>'<div class="qty"><span>'+n+'<br>Rs. '+(counts[n]*2400)+'</span><span><button onclick="changeQty(\''+n+'\',-1)">-</button> '+counts[n]+' <button onclick="changeQty(\''+n+'\',1)">+</button></span></div>').join(''):'<p>Cart is empty.</p>';document.getElementById('items').innerHTML=html;document.getElementById('total').innerText=c.length?'Total: Rs. '+(c.length*2400):'';let msg='Assalam-o-Alaikum! I want to order:\n'+Object.keys(counts).map(n=>n+' x '+counts[n]).join('\n')+'\nTotal: Rs. '+(c.length*2400)+' COD';document.getElementById('wa').href='https://wa.me/923001234567?text='+encodeURIComponent(msg);document.getElementById('cartbox').style.display='block'}
 </script>
 </body>
 </html>
