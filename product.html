@@ -39,20 +39,15 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 <header><h2>ZIRAH</h2><div class="topcart" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.13.12-.27.12-.42 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span id="cart">0</span></div></header>
 <div class="main">
 <h1 id="name">Suit</h1>
-
-<!-- COLOUR WALA ARROW - Pic pe - Colour badle ga -->
-<div class="imgwrap" id="imgwrap">
+<div class="imgwrap">
 <button class="arrow arrowL" id="colourArrowL" onclick="prevColour()" style="display:none">‹</button>
 <img id="big" src="purple-1.jpg">
 <button class="arrow arrowR" id="colourArrowR" onclick="nextColour()" style="display:none">›</button>
 </div>
-
 <div class="thumbs">
 <img id="thumb1" src="purple-1.jpg" class="active" onclick="showPic(0)">
 <img id="thumb2" src="purple-2.jpg" onclick="showPic(1)">
 </div>
-
-<!-- COLOUR WALA ARROW - Neeche bhi - Colour badle ga -->
 <div id="floralBox" style="display:none">
 <div class="colourNav">
 <button onclick="prevColour()">‹</button>
@@ -61,7 +56,6 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 </div>
 <div class="colors" id="colorBtns"></div>
 </div>
-
 <h2>Rs. 2400 • Cash on Delivery</h2>
 <p><b>Unstitched Printed Suit</b><br><b>Fabric: Dhanak</b><br>All Pakistan Delivery</p>
 <button class="btn" onclick="add()">Add to Cart</button><br>
@@ -89,6 +83,18 @@ var colourList = Object.keys(colours);
 var current = "Pink";
 var currentPic = 0;
 
+// Har suit ki pic ka naam - WhatsApp me link banane ke liye
+function getPicFile(itemName){
+  if(itemName.indexOf('Floral')>-1){
+    var col = itemName.replace('Floral Suit - ','').trim();
+    if(colours[col]) return colours[col][0];
+  }
+  if(itemName==='Purple Suit') return 'purple-1.jpg';
+  if(itemName==='Black Suit') return 'black-1.jpg';
+  if(itemName==='Navy Blue Suit') return 'navy-1.jpg';
+  return 'purple-1.jpg';
+}
+
 if(id==='floral'){
   document.getElementById('floralBox').style.display='block';
   document.getElementById('colourArrowL').style.display='block';
@@ -109,7 +115,6 @@ if(id==='floral'){
   document.getElementById('thumb1').src = id+'-1.jpg';
   document.getElementById('thumb2').src = id+'-2.jpg';
 }
-
 function selectColour(c){
   current = c; currentPic = 0;
   document.getElementById('cname').innerText = c;
@@ -121,18 +126,15 @@ function selectColour(c){
   var btns = document.getElementById('colorBtns').querySelectorAll('button');
   btns.forEach(function(x){ x.className = (x.innerText===c?'active':''); });
 }
-// COLOUR ARROW - Agla / Pichla Colour
 function nextColour(){
   if(id!=='floral') return;
   let i = colourList.indexOf(current);
-  let n = colourList[(i+1)%colourList.length];
-  selectColour(n);
+  selectColour(colourList[(i+1)%colourList.length]);
 }
 function prevColour(){
   if(id!=='floral') return;
   let i = colourList.indexOf(current);
-  let n = colourList[(i-1+colourList.length)%colourList.length];
-  selectColour(n);
+  selectColour(colourList[(i-1+colourList.length)%colourList.length]);
 }
 function showPic(i){
   currentPic = i;
@@ -154,7 +156,34 @@ function add(){
   alert('Added to Cart: ' + itemName);
 }
 function changeQty(name,delta){let c=getCart();if(delta>0){c.push(name)}else{let i=c.lastIndexOf(name);if(i>-1)c.splice(i,1)}localStorage.setItem('zirah_items',JSON.stringify(c));updateCount();openCart()}
-function openCart(){let c=getCart();let counts={};c.forEach(x=>counts[x]=(counts[x]||0)+1);let html=Object.keys(counts).length?Object.keys(counts).map(n=>'<div class="qty"><span>'+n+'<br>Rs. '+(counts[n]*2400)+'</span><span><button onclick="changeQty(\''+n+'\',-1)">-</button> '+counts[n]+' <button onclick="changeQty(\''+n+'\',1)">+</button></span></div>').join(''):'<p>Cart is empty.</p>';document.getElementById('items').innerHTML=html;document.getElementById('total').innerText=c.length?'Total: Rs. '+(c.length*2400):'';let msg='Assalam-o-Alaikum! I want to order:\n'+Object.keys(counts).map(n=>n+' x '+counts[n]).join('\n')+'\nTotal: Rs. '+(c.length*2400)+' COD';document.getElementById('wa').href='https://wa.me/923707666223?text='+encodeURIComponent(msg);document.getElementById('cartbox').style.display='block'}
+function openCart(){
+  let c=getCart();
+  let counts={};
+  c.forEach(x=>counts[x]=(counts[x]||0)+1);
+  let html=Object.keys(counts).length?Object.keys(counts).map(n=>'<div class="qty"><span>'+n+'<br>Rs. '+(counts[n]*2400)+'</span><span><button onclick="changeQty(\''+n+'\',-1)">-</button> '+counts[n]+' <button onclick="changeQty(\''+n+'\',1)">+</button></span></div>').join(''):'<p>Cart is empty.</p>';
+  document.getElementById('items').innerHTML=html;
+  document.getElementById('total').innerText=c.length?'Total: Rs. '+(c.length*2400):'';
+  // WHATSAPP MESSAGE - FULL DETAILS + PICTURE LINK
+  let lines = ['Assalam-o-Alaikum! ZIRAH COLLECTION - New Order','--------------------------------'];
+  Object.keys(counts).forEach(function(n){
+    let pic = getPicFile(n);
+    let link = 'https://zirahcollection.github.io/' + pic;
+    lines.push('');
+    lines.push('Suit: ' + n + ' x ' + counts[n]);
+    lines.push('Fabric: Dhanak');
+    lines.push('Type: 3 Piece Unstitched Printed Suit');
+    lines.push('Price: Rs. ' + (counts[n]*2400));
+    lines.push('Picture: ' + link);
+  });
+  lines.push('');
+  lines.push('--------------------------------');
+  lines.push('Total: Rs. ' + (c.length*2400));
+  lines.push('Payment: Cash on Delivery');
+  lines.push('Please confirm my order. Shukriya!');
+  let msg = lines.join('\n');
+  document.getElementById('wa').href='https://wa.me/923707666223?text='+encodeURIComponent(msg);
+  document.getElementById('cartbox').style.display='block';
+}
 </script>
 </body>
 </html>
