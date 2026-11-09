@@ -36,10 +36,15 @@ header p{font-size:14px;line-height:1.6;margin:8px 0 0;color:#e8c96a}
 <div class="card soldout"><span class="outofstock">OUT OF STOCK</span><img src="black-1.jpg"><b>Black Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak</div><div class="price">Rs. 2400</div></div>
 <div class="card soldout"><span class="outofstock">OUT OF STOCK</span><img src="navy-1.jpg"><b>Navy Blue Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak</div><div class="price">Rs. 2400</div></div>
 <a class="card" href="product.html?id=floral"><img src="floral-pink-1.jpg"><b>Floral Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak<br>10 Colours Available</div><div class="price">Rs. 2400</div></a>
-<a class="card" href="product.html?id=rose"><img src="rose-olive-1.jpg"><b>Rose Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak<br>9 Colours Available</div><div class="price">Rs. 2400</div></a>
+<a class="card" href="product.html?id=rose"><img id="roseCardImg" src="rose-olive-1.jpg" onerror="roseFallback(this)"><b>Rose Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak<br>9 Colours Available</div><div class="price">Rs. 2400</div></a>
 </div>
 <div id="cartbox"><div id="cartinner"><h2>Your Cart</h2><div id="items"></div><p id="total"></p><a class="btn" id="wa" href="#">Order on WhatsApp</a><br><button class="btn" style="background:#d4af37;color:#111" onclick="document.getElementById('cartbox').style.display='none'">Close</button></div></div>
 <script>
+function roseFallback(img){
+  var tries=['rose-mustard-1.jpg','rose-pink-1.jpg','rose-green-1.jpg','rose-maroon-1.jpg','rose-navy-1.jpg','rose-teal-1.jpg','rose-mint-1.jpg','rose-purple-1.jpg','rose-slate-1.jpg'];
+  var cur=img.getAttribute('data-try')||0; cur=parseInt(cur);
+  if(cur < tries.length){ img.setAttribute('data-try',cur+1); img.src=tries[cur]; }
+}
 function getPicFile(n){
   if(n.indexOf('Floral')>-1){var c=n.replace('Floral Suit - ','').trim();var m={Pink:'floral-pink-1.jpg',Rust:'floral-rust-1.jpg','Slate Blue':'floral-slate-1.jpg',Maroon:'floral-maroon-1.jpg','Teal Blue':'floral-teal-1.jpg',Green:'floral-green-1.jpg',Mustard:'floral-mustard-1.jpg',Navy:'floral-navy-1.jpg',Mint:'floral-mint-1.jpg',Purple:'floral-purple-1.jpg'};return m[c]||'floral-pink-1.jpg'}
   if(n.indexOf('Rose')>-1){var c=n.replace('Rose Suit - ','').trim();var m={Pink:'rose-pink-1.jpg','Slate Blue':'rose-slate-1.jpg',Maroon:'rose-maroon-1.jpg','Teal Blue':'rose-teal-1.jpg',Green:'rose-green-1.jpg',Olive:'rose-olive-1.jpg',Navy:'rose-navy-1.jpg',Mint:'rose-mint-1.jpg',Purple:'rose-purple-1.jpg'};return m[c]||'rose-olive-1.jpg'}
