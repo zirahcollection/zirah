@@ -9,11 +9,17 @@ body{font-family:Arial;margin:0;background:#fff8f0;text-align:center}
 header{background:linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.88)),url('purple-1.jpg');background-size:cover;background-position:center top;color:#d4af37;padding:20px 15px;position:relative;border-bottom:2px solid #d4af37;overflow:hidden}
 header h2{margin:0;letter-spacing:5px;font-size:28px}
 .main{max-width:420px;margin:auto;padding:0 12px 20px}
-#big{width:90%;max-width:320px;border-radius:12px;margin-top:15px}
+.imgwrap{position:relative;display:inline-block;margin-top:15px}
+#big{width:90%;max-width:320px;border-radius:12px;display:block}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:rgba(0,0,0,.6);color:#fff;font-size:22px;cursor:pointer;z-index:2}
+.arrow:hover{background:#d4af37;color:#111}
+.arrowL{left:5px}
+.arrowR{right:5px}
 .thumbs{display:flex;gap:10px;justify-content:center;margin:12px 0}
 .thumbs img{width:80px;height:110px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
 .thumbs img.active{border-color:#d4af37}
 .btn{background:#25D366;color:#fff;padding:12px 22px;border-radius:25px;display:inline-block;margin:8px;text-decoration:none;font-weight:bold;border:none;font-size:16px;cursor:pointer}
+.navbtn{background:#111;color:#d4af37;padding:10px 18px;border-radius:20px;border:1px solid #d4af37;cursor:pointer;font-weight:bold;font-size:14px;margin:5px}
 .topcart{position:absolute;top:12px;right:10px;background:#d4af37;color:#111;padding:8px 12px;border-radius:25px;font-weight:bold;cursor:pointer;font-size:14px;box-shadow:0 4px 12px rgba(212,175,55,.6);border:2px solid #fff;display:flex;align-items:center;gap:5px}
 .topcart svg{width:20px;height:20px;fill:#000}
 .back{color:#111;display:block;margin-top:15px}
@@ -31,7 +37,14 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 <header><h2>ZIRAH</h2><div class="topcart" onclick="openCart()"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.13.12-.27.12-.42 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span id="cart">0</span></div></header>
 <div class="main">
 <h1 id="name">Suit</h1>
+
+<!-- PIC PE ARROW - Pic badalne ke liye -->
+<div class="imgwrap">
+<button class="arrow arrowL" onclick="prevPic()">‹</button>
 <img id="big" src="purple-1.jpg">
+<button class="arrow arrowR" onclick="nextPic()">›</button>
+</div>
+
 <div class="thumbs">
 <img id="thumb1" src="purple-1.jpg" class="active" onclick="showPic(0)">
 <img id="thumb2" src="purple-2.jpg" onclick="showPic(1)">
@@ -39,22 +52,28 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 <h2>Rs. 2400 • Cash on Delivery</h2>
 <p><b>Unstitched Printed Suit</b><br><b>Fabric: Dhanak</b><br>All Pakistan Delivery</p>
 
-<!-- FLORAL COLOURS - sirf Floral pe dikhe ga -->
 <div id="floralBox" style="display:none">
 <p style="font-weight:bold;margin-bottom:5px">Select Colour: <span id="cname">Pink</span></p>
 <div class="colors" id="colorBtns"></div>
 </div>
 
 <button class="btn" onclick="add()">Add to Cart</button><br>
+
+<!-- SUIT BADALNE WALE ARROW -->
+<div style="margin-top:12px">
+<button class="navbtn" onclick="prevSuit()">← Previous Suit</button>
+<button class="navbtn" onclick="nextSuit()">Next Suit →</button>
+</div>
+
 <a class="back" href="index.html">← Back</a>
 </div>
 <div id="cartbox"><div id="cartinner"><h2>Your Cart</h2><div id="items"></div><p id="total"></p><a class="btn" id="wa" href="#">Order on WhatsApp</a><br><button class="btn" style="background:#d4af37;color:#111" onclick="document.getElementById('cartbox').style.display='none'">Close</button></div></div>
 <script>
 let id=new URLSearchParams(location.search).get('id')||'purple';
+let suits=['purple','black','navy','floral'];
 let names={purple:'Purple Suit',black:'Black Suit',navy:'Navy Blue Suit',floral:'Floral Suit'};
 document.getElementById('name').innerText=names[id]||'Suit';
 
-// 10 COLOURS - FLORAL
 var colours = {
   "Pink": ["floral-pink-1.jpg","floral-pink-2.jpg"],
   "Rust": ["floral-rust-1.jpg","floral-rust-2.jpg"],
@@ -102,14 +121,23 @@ function selectColour(c){
 }
 function showPic(i){
   currentPic = i;
-  if(id==='floral'){
-    document.getElementById('big').src = colours[current][i];
-  } else {
-    document.getElementById('big').src = id+'-'+(i+1)+'.jpg';
-  }
+  if(id==='floral'){ document.getElementById('big').src = colours[current][i]; }
+  else { document.getElementById('big').src = id+'-'+(i+1)+'.jpg'; }
   document.getElementById('thumb1').className = i===0?'active':'';
   document.getElementById('thumb2').className = i===1?'active':'';
 }
+// PIC WALE ARROW
+function prevPic(){ showPic(currentPic===0?1:0); }
+function nextPic(){ showPic(currentPic===0?1:0); }
+// SUIT WALE ARROW
+function goSuit(dir){
+  let idx = suits.indexOf(id); if(idx<0) idx=0;
+  let next = (idx+dir+suits.length)%suits.length;
+  location.href = 'product.html?id='+suits[next];
+}
+function prevSuit(){ goSuit(-1); }
+function nextSuit(){ goSuit(1); }
+
 function getCart(){try{return JSON.parse(localStorage.getItem('zirah_items')||'[]')}catch(e){return[]}}
 function updateCount(){document.getElementById('cart').innerText=getCart().length}
 updateCount();
