@@ -15,11 +15,13 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 .arrow:hover{background:#d4af37;color:#111}
 .arrowL{left:5px}
 .arrowR{right:5px}
+.colourNav{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0}
+.colourNav button{width:42px;height:42px;border-radius:50%;border:1px solid #d4af37;background:#111;color:#d4af37;font-size:22px;cursor:pointer}
+.colourNav b{font-size:17px}
 .thumbs{display:flex;gap:10px;justify-content:center;margin:12px 0}
 .thumbs img{width:80px;height:110px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
 .thumbs img.active{border-color:#d4af37}
 .btn{background:#25D366;color:#fff;padding:12px 22px;border-radius:25px;display:inline-block;margin:8px;text-decoration:none;font-weight:bold;border:none;font-size:16px;cursor:pointer}
-.navbtn{background:#111;color:#d4af37;padding:10px 18px;border-radius:20px;border:1px solid #d4af37;cursor:pointer;font-weight:bold;font-size:14px;margin:5px}
 .topcart{position:absolute;top:12px;right:10px;background:#d4af37;color:#111;padding:8px 12px;border-radius:25px;font-weight:bold;cursor:pointer;font-size:14px;box-shadow:0 4px 12px rgba(212,175,55,.6);border:2px solid #fff;display:flex;align-items:center;gap:5px}
 .topcart svg{width:20px;height:20px;fill:#000}
 .back{color:#111;display:block;margin-top:15px}
@@ -38,39 +40,36 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 <div class="main">
 <h1 id="name">Suit</h1>
 
-<!-- PIC PE ARROW - Pic badalne ke liye -->
-<div class="imgwrap">
-<button class="arrow arrowL" onclick="prevPic()">‹</button>
+<!-- COLOUR WALA ARROW - Pic pe - Colour badle ga -->
+<div class="imgwrap" id="imgwrap">
+<button class="arrow arrowL" id="colourArrowL" onclick="prevColour()" style="display:none">‹</button>
 <img id="big" src="purple-1.jpg">
-<button class="arrow arrowR" onclick="nextPic()">›</button>
+<button class="arrow arrowR" id="colourArrowR" onclick="nextColour()" style="display:none">›</button>
 </div>
 
 <div class="thumbs">
 <img id="thumb1" src="purple-1.jpg" class="active" onclick="showPic(0)">
 <img id="thumb2" src="purple-2.jpg" onclick="showPic(1)">
 </div>
-<h2>Rs. 2400 • Cash on Delivery</h2>
-<p><b>Unstitched Printed Suit</b><br><b>Fabric: Dhanak</b><br>All Pakistan Delivery</p>
 
+<!-- COLOUR WALA ARROW - Neeche bhi - Colour badle ga -->
 <div id="floralBox" style="display:none">
-<p style="font-weight:bold;margin-bottom:5px">Select Colour: <span id="cname">Pink</span></p>
+<div class="colourNav">
+<button onclick="prevColour()">‹</button>
+<b>Colour: <span id="cname">Pink</span></b>
+<button onclick="nextColour()">›</button>
+</div>
 <div class="colors" id="colorBtns"></div>
 </div>
 
+<h2>Rs. 2400 • Cash on Delivery</h2>
+<p><b>Unstitched Printed Suit</b><br><b>Fabric: Dhanak</b><br>All Pakistan Delivery</p>
 <button class="btn" onclick="add()">Add to Cart</button><br>
-
-<!-- SUIT BADALNE WALE ARROW -->
-<div style="margin-top:12px">
-<button class="navbtn" onclick="prevSuit()">← Previous Suit</button>
-<button class="navbtn" onclick="nextSuit()">Next Suit →</button>
-</div>
-
 <a class="back" href="index.html">← Back</a>
 </div>
 <div id="cartbox"><div id="cartinner"><h2>Your Cart</h2><div id="items"></div><p id="total"></p><a class="btn" id="wa" href="#">Order on WhatsApp</a><br><button class="btn" style="background:#d4af37;color:#111" onclick="document.getElementById('cartbox').style.display='none'">Close</button></div></div>
 <script>
 let id=new URLSearchParams(location.search).get('id')||'purple';
-let suits=['purple','black','navy','floral'];
 let names={purple:'Purple Suit',black:'Black Suit',navy:'Navy Blue Suit',floral:'Floral Suit'};
 document.getElementById('name').innerText=names[id]||'Suit';
 
@@ -86,16 +85,19 @@ var colours = {
   "Mint": ["floral-mint-1.jpg","floral-mint-2.jpg"],
   "Purple": ["floral-purple-1.jpg","floral-purple-2.jpg"]
 };
+var colourList = Object.keys(colours);
 var current = "Pink";
 var currentPic = 0;
 
 if(id==='floral'){
   document.getElementById('floralBox').style.display='block';
+  document.getElementById('colourArrowL').style.display='block';
+  document.getElementById('colourArrowR').style.display='block';
   document.getElementById('big').src = colours[current][0];
   document.getElementById('thumb1').src = colours[current][0];
   document.getElementById('thumb2').src = colours[current][1];
   var btnBox = document.getElementById('colorBtns');
-  Object.keys(colours).forEach(function(c){
+  colourList.forEach(function(c){
     var b = document.createElement('button');
     b.innerText = c;
     if(c===current) b.className='active';
@@ -119,6 +121,19 @@ function selectColour(c){
   var btns = document.getElementById('colorBtns').querySelectorAll('button');
   btns.forEach(function(x){ x.className = (x.innerText===c?'active':''); });
 }
+// COLOUR ARROW - Agla / Pichla Colour
+function nextColour(){
+  if(id!=='floral') return;
+  let i = colourList.indexOf(current);
+  let n = colourList[(i+1)%colourList.length];
+  selectColour(n);
+}
+function prevColour(){
+  if(id!=='floral') return;
+  let i = colourList.indexOf(current);
+  let n = colourList[(i-1+colourList.length)%colourList.length];
+  selectColour(n);
+}
 function showPic(i){
   currentPic = i;
   if(id==='floral'){ document.getElementById('big').src = colours[current][i]; }
@@ -126,18 +141,6 @@ function showPic(i){
   document.getElementById('thumb1').className = i===0?'active':'';
   document.getElementById('thumb2').className = i===1?'active':'';
 }
-// PIC WALE ARROW
-function prevPic(){ showPic(currentPic===0?1:0); }
-function nextPic(){ showPic(currentPic===0?1:0); }
-// SUIT WALE ARROW
-function goSuit(dir){
-  let idx = suits.indexOf(id); if(idx<0) idx=0;
-  let next = (idx+dir+suits.length)%suits.length;
-  location.href = 'product.html?id='+suits[next];
-}
-function prevSuit(){ goSuit(-1); }
-function nextSuit(){ goSuit(1); }
-
 function getCart(){try{return JSON.parse(localStorage.getItem('zirah_items')||'[]')}catch(e){return[]}}
 function updateCount(){document.getElementById('cart').innerText=getCart().length}
 updateCount();
