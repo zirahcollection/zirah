@@ -20,7 +20,6 @@ header p{font-size:14px;line-height:1.6;margin:8px 0 0;color:#e8c96a}
 .outofstock{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#cc0000;color:#fff;font-size:12px;font-weight:bold;padding:5px 12px;border-radius:20px;z-index:2;white-space:nowrap}
 .card.soldout{opacity:0.75;pointer-events:none}
 .card.soldout img{filter:grayscale(30%)}
-.newbadge{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#25D366;color:#fff;font-size:11px;font-weight:bold;padding:5px 12px;border-radius:20px;z-index:2;white-space:nowrap}
 .btn{background:#25D366;color:#fff;padding:12px 20px;border-radius:25px;display:inline-block;margin:10px;text-decoration:none;font-weight:bold;border:none;font-size:16px;cursor:pointer}
 #cartbox{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#0008;z-index:99}
 #cartinner{background:#111;color:#fff;margin:60px 15px;padding:20px;border-radius:15px;text-align:left;border:1px solid #d4af37}
@@ -38,8 +37,8 @@ header p{font-size:14px;line-height:1.6;margin:8px 0 0;color:#e8c96a}
 <div class="card soldout"><span class="outofstock">OUT OF STOCK</span><img src="black-1.jpg"><b>Black Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak</div><div class="price">Rs. 2400</div></div>
 <div class="card soldout"><span class="outofstock">OUT OF STOCK</span><img src="navy-1.jpg"><b>Navy Blue Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak</div><div class="price">Rs. 2400</div></div>
 
-<!-- NEW - FLORAL - 10 COLOURS -->
-<a class="card" href="product.html?id=floral"><span class="newbadge">NEW • 10 COLOURS</span><img src="floral-pink-1.jpg"><b>Floral Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak<br>10 Colours Available</div><div class="price">Rs. 2400</div></a>
+<!-- NEW - FLORAL - 10 COLOURS - BADGE HATA DIYA -->
+<a class="card" href="product.html?id=floral"><img src="floral-pink-1.jpg"><b>Floral Suit</b><div class="detail">3 Piece Printed Suit<br>Fabric: Dhanak<br>10 Colours Available</div><div class="price">Rs. 2400</div></a>
 </div>
 <div id="cartbox"><div id="cartinner"><h2>Your Cart</h2><div id="items"></div><p id="total"></p><a class="btn" id="wa" href="#">Order on WhatsApp</a><br><button class="btn" style="background:#d4af37;color:#111" onclick="document.getElementById('cartbox').style.display='none'">Close</button></div></div>
 <script>
