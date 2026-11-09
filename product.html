@@ -40,7 +40,7 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 <h1 id="name">Suit</h1>
 <div class="imgwrap">
 <button class="arrow arrowL" id="colourArrowL" onclick="prevColour()" style="display:none">‹</button>
-<img id="big" src="purple-1.jpg">
+<img id="big" src="purple-1.jpg" onerror="bigFallback(this)">
 <button class="arrow arrowR" id="colourArrowR" onclick="nextColour()" style="display:none">›</button>
 </div>
 <div class="thumbs"><img id="thumb1" src="purple-1.jpg" class="active" onclick="showPic(0)"><img id="thumb2" src="purple-2.jpg" onclick="showPic(1)"></div>
@@ -69,6 +69,12 @@ var colourList = prod.colours||[];
 var current = colourList[0]||'';
 var currentPic=0;
 function picFor(col,idx){ return prod.prefix+'-'+prod.file[col]+'-'+(idx+1)+'.jpg'; }
+function bigFallback(img){
+  if(id!=='rose') return;
+  var tries=['rose-mustard-1.jpg','rose-pink-1.jpg','rose-green-1.jpg','rose-maroon-1.jpg','rose-navy-1.jpg','rose-teal-1.jpg','rose-mint-1.jpg','rose-purple-1.jpg','rose-slate-1.jpg','rose-olive-1.jpg','rose-olive-2.jpg'];
+  var cur=img.getAttribute('data-try')||0; cur=parseInt(cur);
+  if(cur < tries.length){ img.setAttribute('data-try',cur+1); img.src=tries[cur]; }
+}
 function getPicFile(itemName){
   if(itemName.indexOf('Floral')>-1){var c=itemName.replace('Floral Suit - ','').trim();var p=products.floral;return p.prefix+'-'+p.file[c]+'-1.jpg'}
   if(itemName.indexOf('Rose')>-1){var c=itemName.replace('Rose Suit - ','').trim();var p=products.rose;return p.prefix+'-'+p.file[c]+'-1.jpg'}
@@ -89,10 +95,10 @@ if(prod.colours){
   document.getElementById('thumb1').src=id+'-1.jpg';
   document.getElementById('thumb2').src=id+'-2.jpg';
 }
-function selectColour(c){current=c;currentPic=0;document.getElementById('cname').innerText=c;document.getElementById('big').src=picFor(c,0);document.getElementById('thumb1').src=picFor(c,0);document.getElementById('thumb2').src=picFor(c,1);document.getElementById('thumb1').className='active';document.getElementById('thumb2').className='';document.getElementById('colorBtns').querySelectorAll('button').forEach(function(x){x.className=(x.innerText===c?'active':'')})}
+function selectColour(c){current=c;currentPic=0;document.getElementById('cname').innerText=c;var b=document.getElementById('big');b.removeAttribute('data-try');b.src=picFor(c,0);document.getElementById('thumb1').src=picFor(c,0);document.getElementById('thumb2').src=picFor(c,1);document.getElementById('thumb1').className='active';document.getElementById('thumb2').className='';document.getElementById('colorBtns').querySelectorAll('button').forEach(function(x){x.className=(x.innerText===c?'active':'')})}
 function nextColour(){if(!prod.colours)return;let i=colourList.indexOf(current);selectColour(colourList[(i+1)%colourList.length])}
 function prevColour(){if(!prod.colours)return;let i=colourList.indexOf(current);selectColour(colourList[(i-1+colourList.length)%colourList.length])}
-function showPic(i){currentPic=i;if(prod.colours){document.getElementById('big').src=picFor(current,i)}else{document.getElementById('big').src=id+'-'+(i+1)+'.jpg'}document.getElementById('thumb1').className=i===0?'active':'';document.getElementById('thumb2').className=i===1?'active':''}
+function showPic(i){currentPic=i;var b=document.getElementById('big');b.removeAttribute('data-try');if(prod.colours){b.src=picFor(current,i)}else{b.src=id+'-'+(i+1)+'.jpg'}document.getElementById('thumb1').className=i===0?'active':'';document.getElementById('thumb2').className=i===1?'active':''}
 function getCart(){try{return JSON.parse(localStorage.getItem('zirah_items')||'[]')}catch(e){return[]}}
 function updateCount(){document.getElementById('cart').innerText=getCart().length}
 updateCount();
