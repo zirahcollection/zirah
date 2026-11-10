@@ -37,29 +37,30 @@ header h1{margin:0;letter-spacing:5px;font-size:32px}
 <div class="mitem" onclick="toggleSub('winterSub',this)">Winter <span>▾</span></div>
 <div class="sub" id="winterSub">
 <a href="index.html">❄ Printed</a>
-<a href="coming-soon.html?cat=Winter%20Embroidered">✨ Embroidered</a>
+<a href="coming-soon.html?cat=Winter%20Embroided">✨ Embroided</a>
 </div>
 <div class="mitem" onclick="toggleSub('summerSub',this)">Summer <span>▾</span></div>
 <div class="sub" id="summerSub">
 <a href="coming-soon.html?cat=Summer%20Printed">☀ Printed</a>
-<a href="coming-soon.html?cat=Summer%20Embroidered">✨ Embroidered</a>
+<a href="coming-soon.html?cat=Summer%20Embroided">✨ Embroided</a>
 </div>
 <div class="mitem" onclick="location.href='index.html'">🏠 All Collection</div>
 </div>
 <div class="box">
 <div style="font-size:50px">⏳</div>
 <h2 id="catTitle">Coming Soon</h2>
-<p id="catDesc">Ye collection jald aa rahi hai.<br>Stay tuned!</p>
+<p id="catDesc">This collection is coming soon.<br>Stay tuned!</p>
 <a class="btn" href="index.html">← Back to Winter Printed</a><br>
-<a class="btn2" href="https://wa.me/923707666223?text=Assalam-o-Alaikum! ZIRAH Collection - New Collection ka poochna hai">WhatsApp pe Poochain</a>
+<a class="btn2" href="https://wa.me/923707666223?text=Assalam-o-Alaikum! ZIRAH Collection - I want to ask about the new collection">Ask on WhatsApp</a>
 </div>
 <script>
 function openMenu(){document.getElementById('menu').classList.add('open');document.getElementById('menubg').style.display='block'}
 function closeMenu(){document.getElementById('menu').classList.remove('open');document.getElementById('menubg').style.display='none'}
 function toggleSub(id,el){var s=document.getElementById(id);var isOpen=s.classList.contains('open');document.querySelectorAll('.sub').forEach(function(x){x.classList.remove('open')});document.querySelectorAll('.mitem span').forEach(function(x){x.innerText='▾'});if(!isOpen){s.classList.add('open');el.querySelector('span').innerText='▴'}}
 var cat=new URLSearchParams(location.search).get('cat')||'New Collection';
+cat=cat.replaceAll('Embroidered','Embroided');
 document.getElementById('catTitle').innerText=cat + ' - Coming Soon';
-document.getElementById('catDesc').innerHTML=cat+' Collection<br>Jald aa rahi hai. Stay tuned!';
+document.getElementById('catDesc').innerHTML=cat+' Collection<br>Coming Soon. Stay tuned!';
 try{document.getElementById('cart').innerText=JSON.parse(localStorage.getItem('zirah_items')||'[]').length}catch(e){}
 </script>
 </body>
