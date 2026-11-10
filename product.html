@@ -9,8 +9,9 @@ body{font-family:Arial;margin:0;background:#fff8f0;text-align:center}
 header{background:linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.88)),url('purple-1.jpg');background-size:cover;background-position:center top;color:#d4af37;padding:20px 15px;position:relative;border-bottom:2px solid #d4af37;overflow:hidden}
 header h2{margin:0;letter-spacing:5px;font-size:28px}
 .main{max-width:420px;margin:auto;padding:0 12px 20px}
-.imgwrap{position:relative;display:inline-block;margin-top:15px}
-#big{width:90%;max-width:320px;border-radius:12px;display:block;object-fit:contain;object-position:top center}
+.imgwrap{position:relative;display:inline-block;margin-top:15px;width:90%;max-width:320px}
+#big{width:100%;height:430px;border-radius:12px;display:block;object-fit:cover;object-position:center 18%}
+#big.shine-big{object-position:center 28%}
 .arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:rgba(0,0,0,.6);color:#fff;font-size:22px;cursor:pointer;z-index:2}
 .arrow:hover{background:#d4af37;color:#111}
 .arrowL{left:5px}.arrowR{right:5px}
@@ -18,7 +19,7 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 .colourNav button{width:42px;height:42px;border-radius:50%;border:1px solid #d4af37;background:#111;color:#d4af37;font-size:22px;cursor:pointer}
 .colourNav b{font-size:17px}
 .thumbs{display:flex;gap:10px;justify-content:center;margin:12px 0}
-.thumbs img{width:80px;height:110px;object-fit:cover;object-position:top center;border-radius:8px;cursor:pointer;border:2px solid transparent}
+.thumbs img{width:80px;height:110px;object-fit:cover;object-position:center 18%;border-radius:8px;cursor:pointer;border:2px solid transparent}
 .thumbs img.active{border-color:#d4af37}
 .btn{background:#25D366;color:#fff;padding:12px 22px;border-radius:25px;display:inline-block;margin:8px;text-decoration:none;font-weight:bold;border:none;font-size:16px;cursor:pointer}
 .topcart{position:absolute;top:12px;right:10px;background:#d4af37;color:#111;padding:8px 12px;border-radius:25px;font-weight:bold;cursor:pointer;font-size:14px;box-shadow:0 4px 12px rgba(212,175,55,.6);border:2px solid #fff;display:flex;align-items:center;gap:5px}
@@ -90,6 +91,7 @@ let id=new URLSearchParams(location.search).get('id')||'purple';
 let products={purple:{name:'Purple Suit',prefix:'purple',colours:null},black:{name:'Black Suit',prefix:'black',colours:null},navy:{name:'Navy Blue Suit',prefix:'navy',colours:null},floral:{name:'Floral Suit',prefix:'floral',colours:["Pink","Rust","Slate Blue","Maroon","Teal Blue","Green","Mustard","Navy","Mint","Purple"],file:{Pink:'pink',Rust:'rust','Slate Blue':'slate',Maroon:'maroon','Teal Blue':'teal',Green:'green',Mustard:'mustard',Navy:'navy',Mint:'mint',Purple:'purple'}},rose:{name:'Rose Suit',prefix:'rose',colours:["Olive","Pink","Slate Blue","Maroon","Teal Blue","Green","Navy","Mint","Purple"],file:{Pink:'pink','Slate Blue':'slate',Maroon:'maroon','Teal Blue':'teal',Green:'green',Olive:'olive',Navy:'navy',Mint:'mint',Purple:'purple'}},shine:{name:'Shine Suit',prefix:'shine',colours:["Chocolate Brown","Navy Blue","Plum","Olive Green","Black","Maroon","Golden Brown","Dark Olive Green","Zinc Blue","Pink"],file:{'Chocolate Brown':'chocolate','Navy Blue':'navy',Plum:'plum','Olive Green':'olive',Black:'black',Maroon:'maroon','Golden Brown':'golden','Dark Olive Green':'darkolive','Zinc Blue':'zinc',Pink:'pink'}}};
 let prod=products[id]||products.purple;
 document.getElementById('name').innerText=prod.name;
+if(id==='shine'){document.getElementById('big').classList.add('shine-big')}
 var colourList=prod.colours||[];var current=colourList[0]||'';var currentPic=0;
 function picFor(col,idx){return prod.prefix+'-'+prod.file[col]+'-'+(idx+1)+'.jpg';}
 function bigFallback(img){if(id==='shine'){var tries=['shine-navy-1.jpg','shine-plum-1.jpg','shine-olive-1.jpg','shine-black-1.jpg','shine-maroon-1.jpg','shine-golden-1.jpg','shine-darkolive-1.jpg','shine-zinc-1.jpg','shine-pink-1.jpg','shine-chocolate-1.jpg','shine-chocolate-2.jpg'];var cur=img.getAttribute('data-try')||0;cur=parseInt(cur);if(cur<tries.length){img.setAttribute('data-try',cur+1);img.src=tries[cur];}return;}if(id!=='rose')return;var tries2=['rose-mustard-1.jpg','rose-pink-1.jpg','rose-green-1.jpg','rose-maroon-1.jpg','rose-navy-1.jpg','rose-teal-1.jpg','rose-mint-1.jpg','rose-purple-1.jpg','rose-slate-1.jpg','rose-olive-1.jpg','rose-olive-2.jpg'];var cur2=img.getAttribute('data-try')||0;cur2=parseInt(cur2);if(cur2<tries2.length){img.setAttribute('data-try',cur2+1);img.src=tries2[cur2];}}
