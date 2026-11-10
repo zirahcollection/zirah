@@ -55,12 +55,12 @@ header h2{margin:0;letter-spacing:5px;font-size:28px}
 <div class="mitem" onclick="toggleSub('winterSub',this)">Winter <span>▾</span></div>
 <div class="sub" id="winterSub">
 <a href="index.html">❄ Printed</a>
-<a href="coming-soon.html?cat=Winter%20Embroidered">✨ Embroidered</a>
+<a href="coming-soon.html?cat=Winter%20Embroided">✨ Embroided</a>
 </div>
 <div class="mitem" onclick="toggleSub('summerSub',this)">Summer <span>▾</span></div>
 <div class="sub" id="summerSub">
 <a href="coming-soon.html?cat=Summer%20Printed">☀ Printed</a>
-<a href="coming-soon.html?cat=Summer%20Embroidered">✨ Embroidered</a>
+<a href="coming-soon.html?cat=Summer%20Embroided">✨ Embroided</a>
 </div>
 <div class="mitem" onclick="location.href='index.html'">🏠 All Collection</div>
 </div>
@@ -87,45 +87,14 @@ function openMenu(){document.getElementById('menu').classList.add('open');docume
 function closeMenu(){document.getElementById('menu').classList.remove('open');document.getElementById('menubg').style.display='none'}
 function toggleSub(id,el){var s=document.getElementById(id);var isOpen=s.classList.contains('open');document.querySelectorAll('.sub').forEach(function(x){x.classList.remove('open')});document.querySelectorAll('.mitem span').forEach(function(x){x.innerText='▾'});if(!isOpen){s.classList.add('open');el.querySelector('span').innerText='▴'}}
 let id=new URLSearchParams(location.search).get('id')||'purple';
-let products={
-  purple:{name:'Purple Suit',prefix:'purple',colours:null},
-  black:{name:'Black Suit',prefix:'black',colours:null},
-  navy:{name:'Navy Blue Suit',prefix:'navy',colours:null},
-  floral:{name:'Floral Suit',prefix:'floral',colours:["Pink","Rust","Slate Blue","Maroon","Teal Blue","Green","Mustard","Navy","Mint","Purple"],file:{Pink:'pink',Rust:'rust','Slate Blue':'slate',Maroon:'maroon','Teal Blue':'teal',Green:'green',Mustard:'mustard',Navy:'navy',Mint:'mint',Purple:'purple'}},
-  rose:{name:'Rose Suit',prefix:'rose',colours:["Olive","Pink","Slate Blue","Maroon","Teal Blue","Green","Navy","Mint","Purple"],file:{Pink:'pink','Slate Blue':'slate',Maroon:'maroon','Teal Blue':'teal',Green:'green',Olive:'olive',Navy:'navy',Mint:'mint',Purple:'purple'}}
-};
-let prod = products[id]||products.purple;
+let products={purple:{name:'Purple Suit',prefix:'purple',colours:null},black:{name:'Black Suit',prefix:'black',colours:null},navy:{name:'Navy Blue Suit',prefix:'navy',colours:null},floral:{name:'Floral Suit',prefix:'floral',colours:["Pink","Rust","Slate Blue","Maroon","Teal Blue","Green","Mustard","Navy","Mint","Purple"],file:{Pink:'pink',Rust:'rust','Slate Blue':'slate',Maroon:'maroon','Teal Blue':'teal',Green:'green',Mustard:'mustard',Navy:'navy',Mint:'mint',Purple:'purple'}},rose:{name:'Rose Suit',prefix:'rose',colours:["Olive","Pink","Slate Blue","Maroon","Teal Blue","Green","Navy","Mint","Purple"],file:{Pink:'pink','Slate Blue':'slate',Maroon:'maroon','Teal Blue':'teal',Green:'green',Olive:'olive',Navy:'navy',Mint:'mint',Purple:'purple'}}};
+let prod=products[id]||products.purple;
 document.getElementById('name').innerText=prod.name;
-var colourList = prod.colours||[];
-var current = colourList[0]||'';
-var currentPic=0;
-function picFor(col,idx){ return prod.prefix+'-'+prod.file[col]+'-'+(idx+1)+'.jpg'; }
-function bigFallback(img){
-  if(id!=='rose') return;
-  var tries=['rose-mustard-1.jpg','rose-pink-1.jpg','rose-green-1.jpg','rose-maroon-1.jpg','rose-navy-1.jpg','rose-teal-1.jpg','rose-mint-1.jpg','rose-purple-1.jpg','rose-slate-1.jpg','rose-olive-1.jpg','rose-olive-2.jpg'];
-  var cur=img.getAttribute('data-try')||0; cur=parseInt(cur);
-  if(cur < tries.length){ img.setAttribute('data-try',cur+1); img.src=tries[cur]; }
-}
-function getPicFile(itemName){
-  if(itemName.indexOf('Floral')>-1){var c=itemName.replace('Floral Suit - ','').trim();var p=products.floral;return p.prefix+'-'+p.file[c]+'-1.jpg'}
-  if(itemName.indexOf('Rose')>-1){var c=itemName.replace('Rose Suit - ','').trim();var p=products.rose;return p.prefix+'-'+p.file[c]+'-1.jpg'}
-  if(itemName==='Purple Suit') return 'purple-1.jpg'; if(itemName==='Black Suit') return 'black-1.jpg'; if(itemName==='Navy Blue Suit') return 'navy-1.jpg'; return 'purple-1.jpg';
-}
-if(prod.colours){
-  document.getElementById('colourBox').style.display='block';
-  document.getElementById('colourArrowL').style.display='block';
-  document.getElementById('colourArrowR').style.display='block';
-  document.getElementById('cname').innerText=current;
-  document.getElementById('big').src=picFor(current,0);
-  document.getElementById('thumb1').src=picFor(current,0);
-  document.getElementById('thumb2').src=picFor(current,1);
-  var box=document.getElementById('colorBtns');
-  colourList.forEach(function(c){var b=document.createElement('button');b.innerText=c;if(c===current)b.className='active';b.onclick=function(){selectColour(c)};box.appendChild(b)});
-} else {
-  document.getElementById('big').src=id+'-1.jpg';
-  document.getElementById('thumb1').src=id+'-1.jpg';
-  document.getElementById('thumb2').src=id+'-2.jpg';
-}
+var colourList=prod.colours||[];var current=colourList[0]||'';var currentPic=0;
+function picFor(col,idx){return prod.prefix+'-'+prod.file[col]+'-'+(idx+1)+'.jpg';}
+function bigFallback(img){if(id!=='rose')return;var tries=['rose-mustard-1.jpg','rose-pink-1.jpg','rose-green-1.jpg','rose-maroon-1.jpg','rose-navy-1.jpg','rose-teal-1.jpg','rose-mint-1.jpg','rose-purple-1.jpg','rose-slate-1.jpg','rose-olive-1.jpg','rose-olive-2.jpg'];var cur=img.getAttribute('data-try')||0;cur=parseInt(cur);if(cur<tries.length){img.setAttribute('data-try',cur+1);img.src=tries[cur];}}
+function getPicFile(itemName){if(itemName.indexOf('Floral')>-1){var c=itemName.replace('Floral Suit - ','').trim();var p=products.floral;return p.prefix+'-'+p.file[c]+'-1.jpg'}if(itemName.indexOf('Rose')>-1){var c=itemName.replace('Rose Suit - ','').trim();var p=products.rose;return p.prefix+'-'+p.file[c]+'-1.jpg'}if(itemName==='Purple Suit')return 'purple-1.jpg';if(itemName==='Black Suit')return 'black-1.jpg';if(itemName==='Navy Blue Suit')return 'navy-1.jpg';return 'purple-1.jpg';}
+if(prod.colours){document.getElementById('colourBox').style.display='block';document.getElementById('colourArrowL').style.display='block';document.getElementById('colourArrowR').style.display='block';document.getElementById('cname').innerText=current;document.getElementById('big').src=picFor(current,0);document.getElementById('thumb1').src=picFor(current,0);document.getElementById('thumb2').src=picFor(current,1);var box=document.getElementById('colorBtns');colourList.forEach(function(c){var b=document.createElement('button');b.innerText=c;if(c===current)b.className='active';b.onclick=function(){selectColour(c)};box.appendChild(b)});}else{document.getElementById('big').src=id+'-1.jpg';document.getElementById('thumb1').src=id+'-1.jpg';document.getElementById('thumb2').src=id+'-2.jpg';}
 function selectColour(c){current=c;currentPic=0;document.getElementById('cname').innerText=c;var b=document.getElementById('big');b.removeAttribute('data-try');b.src=picFor(c,0);document.getElementById('thumb1').src=picFor(c,0);document.getElementById('thumb2').src=picFor(c,1);document.getElementById('thumb1').className='active';document.getElementById('thumb2').className='';document.getElementById('colorBtns').querySelectorAll('button').forEach(function(x){x.className=(x.innerText===c?'active':'')})}
 function nextColour(){if(!prod.colours)return;let i=colourList.indexOf(current);selectColour(colourList[(i+1)%colourList.length])}
 function prevColour(){if(!prod.colours)return;let i=colourList.indexOf(current);selectColour(colourList[(i-1+colourList.length)%colourList.length])}
